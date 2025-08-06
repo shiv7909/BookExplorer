@@ -43,7 +43,6 @@ class BookDetailPageController extends GetxController {
           descText = desc['value'];
         }
 
-        // Unescape HTML entities like &quot;
         final unescape = HtmlUnescape();
         description.value = unescape.convert(descText.trim().isEmpty ? 'No description available.' : descText);
       }
