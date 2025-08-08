@@ -1,25 +1,25 @@
-import 'package:get/get.dart';
+import 'package:flutter/foundation.dart';
 import '../models/book_model.dart';
 import '../services/shared_preferences_service.dart';
 
-class HomePageController extends GetxController {
-
-
+class HomePageController with ChangeNotifier {
   final SharedPreferencesService _prefsService = SharedPreferencesService();
-  final RxList<Book> recentlyVisitedBooks = <Book>[].obs;
+
+  List<Book> _recentlyVisitedBooks = [];
+  List<Book> get recentlyVisitedBooks => _recentlyVisitedBooks;
+
   final List<String> categories = [
     'History', 'Plays', 'Philosophy', 'Self Help', 'Science',
     'Religion', 'Autobiographies', 'Fantasy', 'Finance', 'Romance'
   ];
 
-  @override
-  void onInit() {
-    super.onInit();
+  HomePageController() {
     loadRecentlyVisitedBooks();
   }
 
   Future<void> loadRecentlyVisitedBooks() async {
     final books = await _prefsService.getRecentlyVisitedBooks();
-    recentlyVisitedBooks.assignAll(books);
+    _recentlyVisitedBooks = books;
+    notifyListeners(); // Notify listeners that the data has changed
   }
 }

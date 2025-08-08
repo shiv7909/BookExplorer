@@ -1,6 +1,5 @@
 import 'package:anveshana/views/home_page_view.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 
 void main() {
@@ -11,7 +10,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
       title: 'Flutter Demo',
       home: const HomePageView(),
       debugShowCheckedModeBanner: false,

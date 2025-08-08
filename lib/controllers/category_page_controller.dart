@@ -1,52 +1,32 @@
 import 'dart:convert';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../models/book_model.dart';
 
-class CategoryPageController extends GetxController {
-  final String category;
-  final RxBool isLoading = false.obs;
-  final RxList<Book> books = <Book>[].obs;
-
-  CategoryPageController({required this.category});
-
-  @override
-  void onInit() {
-    super.onInit();
-    fetchBooksByCategory();
-  }
-
-  Future<void> fetchBooksByCategory() async {
-    isLoading.value = true;
+class CategoryPageService {
+  Future<List<Book>> fetchBooksByCategory(String category) async {
     try {
       final response = await http.get(
         Uri.parse('https://openlibrary.org/subjects/${category.toLowerCase()}.json'),
       );
 
       if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body);
-        final List<dynamic> workList = jsonResponse['works'];
-        books.assignAll(
-          workList.map((work) {
-            final book = Book.fromJson(work);
-            return Book(
-              title: book.title,
-              authorNames: book.authorNames,
-              firstPublishYear: work['first_publish_year'],
-              coverId: work['cover_id']?.toString(),
-              worksKey: book.worksKey,
-            );
-          }).where((book) => book.coverId != null && book.worksKey != null).toList(),
-        );
+        try {
+          final jsonResponse = jsonDecode(response.body);
+          print('JSON response for $category: $jsonResponse'); // Add this line
+          final List<dynamic> workList = jsonResponse['works'] ?? [];
+          return workList
+              .map((work) => Book.fromJson(work))
+              .where((book) => book.coverId != null && book.worksKey != null)
+              .toList();
+        } on FormatException {
+          print('Warning: Received non-JSON response for category: $category');
+          return [];
+        }
       } else {
-        Get.snackbar('Error', 'Failed to load books for category: $category');
-        books.clear();
+        throw Exception('Failed to load books for category: $category. Status code: ${response.statusCode}');
       }
     } catch (e) {
-      Get.snackbar('Error', 'An error occurred: $e');
-      books.clear();
-    } finally {
-      isLoading.value = false;
+      throw Exception('An error occurred: $e');
     }
   }
 }

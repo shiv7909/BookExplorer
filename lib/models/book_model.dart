@@ -1,10 +1,10 @@
-import 'dart:convert';
+
 
 class Book {
   final String title;
   final List<dynamic>? authorNames;
   final int? firstPublishYear;
-  final String? coverId;
+  final int? coverId;
   final String? worksKey;
 
   Book({
@@ -16,11 +16,28 @@ class Book {
   });
 
   factory Book.fromJson(Map<String, dynamic> json) {
+
+    List<dynamic>? names;
+    if (json.containsKey('author_name')) {
+      names = json['author_name'];
+    } else if (json.containsKey('authors')) {
+      final List<dynamic>? authorsJson = json['authors'];
+      names = authorsJson?.map((author) => author['name'] as String).toList();
+    }
+
+    int? parsedCoverId;
+    final dynamic coverValue = json['cover_i'] ?? json['cover_id'];
+    if (coverValue is int) {
+      parsedCoverId = coverValue;
+    } else if (coverValue is String) {
+      parsedCoverId = int.tryParse(coverValue);
+    }
+
     return Book(
       title: json['title'] ?? 'Unknown Title',
-      authorNames: json['author_name'],
+      authorNames: names,
       firstPublishYear: json['first_publish_year'],
-      coverId: json['cover_i']?.toString(),
+      coverId: parsedCoverId,
       worksKey: json['key'],
     );
   }
