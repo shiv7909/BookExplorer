@@ -151,7 +151,7 @@ class _HomePageViewState extends State<HomePageView> {
           MaterialPageRoute(
             builder: (context) => BookDetailPageView(
               book: book,
-              onBookVisited: _loadRecentlyVisitedBooks, // Correctly pass the function here
+              onBookVisited: _loadRecentlyVisitedBooks, 
             ),
           ),
         ).then((_) => _loadRecentlyVisitedBooks()); // Trigger reload when returning to this page
