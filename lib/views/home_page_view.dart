@@ -151,7 +151,7 @@ class _HomePageViewState extends State<HomePageView> {
           MaterialPageRoute(
             builder: (context) => BookDetailPageView(
               book: book,
-              onBookVisited: _loadRecentlyVisitedBooks, 
+              onBookVisited: _loadRecentlyVisitedBooks,
             ),
           ),
         ).then((_) => _loadRecentlyVisitedBooks());
