@@ -124,7 +124,7 @@ class _CategoryPageViewState extends State<CategoryPageView> {
                         MaterialPageRoute(
                           builder: (context) => BookDetailPageView(
                             book: book,
-                            onBookVisited: widget.onBookVisited, // Pass the callback down
+                            onBookVisited: widget.onBookVisited, 
                           ),
                         ),
                       );
