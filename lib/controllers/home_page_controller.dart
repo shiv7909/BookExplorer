@@ -20,6 +20,6 @@ class HomePageController with ChangeNotifier {
   Future<void> loadRecentlyVisitedBooks() async {
     final books = await _prefsService.getRecentlyVisitedBooks();
     _recentlyVisitedBooks = books;
-    notifyListeners(); // Notify listeners that the data has changed
+    notifyListeners(); 
   }
 }
