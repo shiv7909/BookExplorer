@@ -154,7 +154,7 @@ class _HomePageViewState extends State<HomePageView> {
               onBookVisited: _loadRecentlyVisitedBooks, 
             ),
           ),
-        ).then((_) => _loadRecentlyVisitedBooks()); // Trigger reload when returning to this page
+        ).then((_) => _loadRecentlyVisitedBooks());
       },
       child: Container(
         width: 120,
